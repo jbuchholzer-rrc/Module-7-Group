@@ -1,24 +1,30 @@
 const form = document.getElementById("donationForm");
 
-form.addEventListener("submit", (event) => {
-    event.preventDefault(); // Prevent the form from submitting immediately
-    
-    // Validate form inputs
-    const errorMessages = document.querySelectorAll(".error");
-      for (const el of errorMessages) {
-          el.remove();
-      }
-  
-      if (validateForm()) {
-          form.submit();
-      } else {
-          console.error("Form has errors");
-      }
-    }
-  );
+form.addEventListener("submit", function (event) {
+    event.preventDefault(); // Stop the form from submitting
 
-// Validates form inputs before submission
-function validateForm() {
+    // Clear previous error messages
+    const errorMessages = document.querySelectorAll(".error");
+    errorMessages.forEach((el) => el.remove());
+
+    // Validate form inputs
+    if (!validateForm()) {
+      console.error("Form has errors");
+      return;
+  }
+
+  // If validation passes, collect the form data
+  const donationData = {
+      charityName: document.getElementById("charityName").value.trim(),
+      donationAmount: parseFloat(document.getElementById("donationAmount").value),
+      donationDate: document.getElementById("donationDate").value,
+      donorMessage: document.getElementById("donorMessage").value.trim()
+  };
+  // console.log("Donation submitted:", donationData); (just to check)
+});
+
+  // Validates form inputs before submission
+  function validateForm() {
     let isValid = true;
   
     // === CHARITY NAME VALIDATION ===
@@ -43,26 +49,9 @@ function validateForm() {
       isValid = false;
     }
   
-    return isValid;
+  return isValid;
 }
   
-// Handles the form submission event
-document.getElementById("donationForm").addEventListener("submit", function(e) {
-    e.preventDefault();
-  
-    // Validate the form
-    if (!validateForm()) return;
-  
-    // Collect form data into an object
-    const donationData = {
-    charityName: document.getElementById("charityName").value.trim(),
-    donationAmount: parseFloat(document.getElementById("donationAmount").value),
-    donationDate: document.getElementById("donationDate").value,
-    donorMessage: document.getElementById("donorMessage").value.trim()
-    };
-  
-});
-
 /**
  * Display an error message following the input element passed
  *
