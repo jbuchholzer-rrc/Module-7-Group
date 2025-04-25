@@ -1,16 +1,16 @@
 const form = document.getElementById("donationForm");
 
 form.addEventListener("submit", function (event) {
-    event.preventDefault(); // Stop the form from submitting
+  event.preventDefault(); // Stop the form from submitting
 
-    // Clear previous error messages
-    const errorMessages = document.querySelectorAll(".error");
-    errorMessages.forEach((el) => el.remove());
+  // Clear previous error messages
+  const errorMessages = document.querySelectorAll(".error");
+  errorMessages.forEach((el) => el.remove());
 
-    // Validate form inputs
-    if (!validateForm()) {
-      console.error("Form has errors");
-      return;
+  // Validate form inputs
+  if (!validateForm()) {
+    console.error("Form has errors");
+    return;
   }
 
   // If validation passes, collect the form data
@@ -107,7 +107,7 @@ function createDonationRow(donationKey, {charityName, donationAmount, donationDa
   const deleteButton = document.createElement("button");
   deleteButton.innerText = "Delete";
   deleteButton.addEventListener("click", ()=>{
-    console.log(donationKey);
+    deleteDonation(donationKey);
   });
 
   // Add the delete button to the delete button cell.
@@ -193,6 +193,21 @@ function loadAllDonations(){
     // Add the row to the table.
     table.appendChild(donationRow);
   });
+}
+
+/**
+ * Deletes a donation from storage and removes its row from the table.
+ * @param {string} donationKey The key of the donation to delete.
+ */
+function deleteDonation(donationKey){
+  // Remove the donation from storage.
+  localStorage.removeItem(donationKey);
+
+  // Find the corresponding donation row.
+  const row = document.querySelector(`#${donationKey}`);
+
+  // Delete the row.
+  row.remove()
 }
 
 // Loads the donation into the table when the page is opened.
