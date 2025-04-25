@@ -13,31 +13,56 @@
 
   <!-- Donation Tracker -->
   <main>
-    <h1>Donation Tracker</h1>
-    <form id="donationForm">
-      <div class="input-container">
-        <label for="charityName">Charity Name:</label>
-        <input type="text" id="charityName" name="charityName"/>
-      </div>
+    <section id="form-section">
+      <h1>Donation Tracker</h1>
+      <form id="donationForm">
+        <div class="input-container">
+          <label for="charityName">Charity Name:</label>
+          <input type="text" id="charityName" name="charityName"/>
+        </div>
+  
+        <div class="input-container">
+          <label for="donationAmount">Donation Amount ($):</label>
+          <input type="number" id="donationAmount" name="donationAmount" min="0.01" step="0.01"/>
+        </div>
+  
+        <div class="input-container">
+          <label for="donationDate">Date of Donation:</label>
+          <input type="date" id="donationDate" name="donationDate" />
+        </div>
+  
+        <div class="input-container">
+          <label for="donorMessage">Donor Message:</label>
+          <textarea id="donorMessage" name="donorMessage"></textarea>
+        </div>
+          
+          
+        <button type="submit">Submit Donation</button>
+      </form>
+    </section>
 
-      <div class="input-container">
-        <label for="donationAmount">Donation Amount ($):</label>
-        <input type="number" id="donationAmount" name="donationAmount" min="0.01" step="0.01"/>
-      </div>
+    <section id="summary-section">
+      <h2>Summary</h2>
+      <p>A total of $<span id="total-donated"></span> was donated.</p>
+    </section>
 
-      <div class="input-container">
-        <label for="donationDate">Date of Donation:</label>
-        <input type="date" id="donationDate" name="donationDate" />
-      </div>
+    <section id="table-section">
+      <table id="donations-table">
+        <thead>
+          <tr>
+            <th>Charity</th>
+            <th>Donated</th>
+            <th>Date</th>
+            <th>Comment</th>
+            <th> </th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- The dontions are displayed here -->
+        </tbody>
+      </table>
+    </section>
 
-      <div class="input-container">
-        <label for="donorMessage">Donor Message:</label>
-        <textarea id="donorMessage" name="donorMessage"></textarea>
-      </div>
-        
-        
-      <button type="submit">Submit Donation</button>
-    </form>
   </main>
 
   <!-- Shared Footer -->

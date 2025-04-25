@@ -30,7 +30,7 @@ nav {
     text-align: center;
 }
   
-main {
+#form-section {
     max-width: 600px;
     margin: 0 auto;
     background: white;
@@ -103,4 +103,61 @@ button[type="submit"]:hover {
   
 .input-container {
     margin-bottom: 15px;
+}
+
+#summary-section {
+    margin-top: 15px;
+    width: 100%;
+    justify-items: center;
+}
+
+#total-donated {
+    color: lime;
+}
+
+#table-section {
+    width: 100%;
+    padding: 15px 30px;
+}
+
+table {
+    background-color: white;
+    width: 100%;
+    border-collapse: collapse;
+    padding: 10px;
+    table-layout: fixed;
+}
+
+td, th {
+    border: 1px solid #ccd6dd;
+    padding: 5px;
+    text-align: center;
+    overflow-wrap: break-word;
+}
+
+td:nth-child(4){
+    text-align: left;
+}
+
+th:nth-child(1) {
+    width: 15%;
+}
+th:nth-child(2) {
+    width: 10%;
+}
+th:nth-child(3) {
+    width: 15%;
+}
+th:nth-child(5) {
+    width: 7%;
+}
+
+td button {
+    padding: 7px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-weight: bold;
 }
