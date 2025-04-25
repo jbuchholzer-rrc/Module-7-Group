@@ -1,5 +1,7 @@
 const form = document.getElementById("donationForm");
 
+let totalDonated = 0;
+
 form.addEventListener("submit", function (event) {
   event.preventDefault(); // Stop the form from submitting
 
@@ -107,7 +109,14 @@ function createDonationRow(donationKey, {charityName, donationAmount, donationDa
   const deleteButton = document.createElement("button");
   deleteButton.innerText = "Delete";
   deleteButton.addEventListener("click", ()=>{
+    // Delete the donation.
     deleteDonation(donationKey);
+
+    // Reduce the total by the donation amount.
+    totalDonated -= donationAmount;
+    
+    // Display the new total.
+    document.getElementById("total-donated").innerText = totalDonated;
   });
 
   // Add the delete button to the delete button cell.
@@ -179,6 +188,9 @@ function loadAllDonations(){
   // Clear the table.
   table.innerHTML = "";
 
+  // Reset the total amount donated.
+  totalDonated = 0;
+
   // Get all keys of localStorage starting with "donation".
   const keys = Object.keys(localStorage).filter(key=>key.startsWith("donation"));
 
@@ -187,12 +199,18 @@ function loadAllDonations(){
     // Load the donation.
     const donation = loadDonation(key);
 
+    // Add to the total.
+    totalDonated+=donation.donationAmount;
+
     // Create a row element with the donation information.
     const donationRow = createDonationRow(key, donation);
 
     // Add the row to the table.
     table.appendChild(donationRow);
   });
+
+  // Display the total.
+  document.getElementById("total-donated").innerText = totalDonated;
 }
 
 /**
