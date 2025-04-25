@@ -70,4 +70,50 @@ function showInputError(inputElement, message) {
 
   container.appendChild(errorDisplay);
 }
+
+function displayDonation({charityName, donationAmount, donationDate, donorMessage}){
+  // get the table body to add the donation information to.
+  const table = document.querySelector("#donations-table tbody");
+
+  // create the row element.
+  const row = document.createElement("tr");
   
+  // create the charity name cell.
+  const charityNameElement = document.createElement("td");
+  charityNameElement.innerText = charityName;
+
+  // create the donation amount cell.
+  const donationAmountElement = document.createElement("td");
+  donationAmountElement.innerText = `$${donationAmount}`;
+
+  // create the donation date cell.
+  const dateDonatedElement = document.createElement("td");
+  dateDonatedElement.innerText = donationDate;
+
+  // create the donation message cell.
+  const donationMessageElement = document.createElement("td");
+  donationMessageElement.innerText = donorMessage;
+
+  // create the delete button cell.
+  const buttonContainerElement = document.createElement("td");
+
+  // create the delete button.
+  const deleteButton = document.createElement("button");
+  deleteButton.innerText = "Delete";
+  deleteButton.addEventListener("click", ()=>{
+    console.log({charityName, donationAmount, donationDate, donorMessage});
+  });
+
+  // add the delete button to the delete button cell.
+  buttonContainerElement.appendChild(deleteButton);
+
+  // add cells to the row.
+  row.appendChild(charityNameElement);
+  row.appendChild(donationAmountElement);
+  row.appendChild(dateDonatedElement);
+  row.appendChild(donationMessageElement);
+  row.appendChild(buttonContainerElement);
+
+  // add row to the table.
+  table.appendChild(row);
+}
