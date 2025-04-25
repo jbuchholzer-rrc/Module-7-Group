@@ -194,3 +194,6 @@ function loadAllDonations(){
     table.appendChild(donationRow);
   });
 }
+
+// Loads the donation into the table when the page is opened.
+loadAllDonations();
