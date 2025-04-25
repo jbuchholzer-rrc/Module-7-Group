@@ -166,6 +166,11 @@ function handleSubmit(event) {
     
     // Show confirmation with details
     displaySubmissionConfirmation(volunteerEntry);
+
+    // Display on the table summary
+    saveToLocalStorage();
+    updateVolunteerTable();
+    updateSummary();
     
     // Reset the form
     volunteerForm.reset();
@@ -215,6 +220,98 @@ function displaySubmissionConfirmation(entry) {
     }, 8000);
 }
 
+// Save data to localStorage
+function saveToLocalStorage() {
+    localStorage.setItem('volunteerData', JSON.stringify(volunteerData));
+}
+
+// Load data from localStorage
+function loadFromLocalStorage() {
+    const storedData = localStorage.getItem('volunteerData');
+    if (storedData) {
+        volunteerData = JSON.parse(storedData);
+    }
+}
+
+// Delete a volunteer entry
+function deleteVolunteerEntry(id) {
+
+    volunteerData = volunteerData.filter(entry => entry.id !== id);
+    
+    saveToLocalStorage();
+    
+    updateVolunteerTable();
+    
+    updateSummary();
+}
+
+// Update the volunteer hours table
+function updateVolunteerTable() {
+    const tableBody = document.getElementById('volunteer-table-body');
+    
+    // Clear the current table content
+    tableBody.innerHTML = '';
+    
+   
+    const sortedData = [...volunteerData].sort((a, b) => {
+        return new Date(b.date) - new Date(a.date);
+    });
+    
+    
+    sortedData.forEach(entry => {
+        const row = document.createElement('tr');
+        
+        const formattedDate = new Date(entry.date).toLocaleDateString();
+        
+        const starRating = '★'.repeat(entry.rating) + '☆'.repeat(5 - entry.rating);
+        
+        const notesDisplay = entry.notes && entry.notes.trim() !== '' 
+            ? entry.notes 
+            : '<span class="no-notes"> </span>';
+       
+        row.innerHTML = `
+            <td>${entry.charityName}</td>
+            <td>${entry.hours}</td>
+            <td>${formattedDate}</td>
+            <td class="star-rating-display">${starRating}</td>
+            <td class="notes-cell">${notesDisplay}</td>
+            <td>
+                <button class="btn delete-btn" data-id="${entry.id}">Delete</button>
+            </td>
+        `;
+        
+        // Add the row to the table
+        tableBody.appendChild(row);
+    });
+    
+    // Add event listeners to the delete buttons
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            const id = parseInt(e.target.getAttribute('data-id'));
+            deleteVolunteerEntry(id);
+        });
+    });
+}
+
+// Update the summary section
+function updateSummary() {
+    const totalHoursElement = document.getElementById('total-hours');
+    
+    // Calculate total hours
+    const totalHours = volunteerData.reduce((sum, entry) => sum + entry.hours, 0);
+    
+    // Update the display
+    totalHoursElement.textContent = totalHours.toFixed(1);
+}
+
+
+// Add event listener for form submission
+volunteerForm.addEventListener('submit', handleSubmit);
+
+
+
+
 // Add event listener for form submission
 volunteerForm.addEventListener('submit', handleSubmit);
 
@@ -222,6 +319,15 @@ volunteerForm.addEventListener('submit', handleSubmit);
 function init() {
     // Clear any previously stored data (for demo purposes)
     volunteerData = [];
+
+     // Load previously stored data
+     loadFromLocalStorage();
+
+     // Render the loaded data in the table
+     updateVolunteerTable();
+ 
+     // Update the summary
+     updateSummary();
     
     // Set default date to today
     const today = new Date().toISOString().split('T')[0];
