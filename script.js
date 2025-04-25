@@ -21,6 +21,8 @@ form.addEventListener("submit", function (event) {
       donorMessage: document.getElementById("donorMessage").value.trim()
   };
   // console.log("Donation submitted:", donationData); (just to check)
+  saveDonation(donationData);
+  loadAllDonations();
 });
 
 /**
@@ -71,51 +73,55 @@ function showInputError(inputElement, message) {
   container.appendChild(errorDisplay);
 }
 
-function displayDonation({charityName, donationAmount, donationDate, donorMessage}){
-  // get the table body to add the donation information to.
-  const table = document.querySelector("#donations-table tbody");
-
-  // create the row element.
+/**
+ * Creates a table row containing donation information and a delete button.
+ * @param {string} donationKey The key to this donation in localStorage.
+ * @param {Object} param1 The donation object.
+ * @returns {HTMLElement} The created row element.
+ */
+function createDonationRow(donationKey, {charityName, donationAmount, donationDate, donorMessage}){
+  // Create the row element.
   const row = document.createElement("tr");
+  row.id = donationKey;
   
-  // create the charity name cell.
+  // Create the charity name cell.
   const charityNameElement = document.createElement("td");
   charityNameElement.innerText = charityName;
 
-  // create the donation amount cell.
+  // Create the donation amount cell.
   const donationAmountElement = document.createElement("td");
   donationAmountElement.innerText = `$${donationAmount}`;
 
-  // create the donation date cell.
+  // Create the donation date cell.
   const dateDonatedElement = document.createElement("td");
   dateDonatedElement.innerText = donationDate;
 
-  // create the donation message cell.
+  // Create the donation message cell.
   const donationMessageElement = document.createElement("td");
   donationMessageElement.innerText = donorMessage;
 
-  // create the delete button cell.
+  // Create the delete button cell.
   const buttonContainerElement = document.createElement("td");
 
-  // create the delete button.
+  // Create the delete button.
   const deleteButton = document.createElement("button");
   deleteButton.innerText = "Delete";
   deleteButton.addEventListener("click", ()=>{
-    console.log({charityName, donationAmount, donationDate, donorMessage});
+    console.log(donationKey);
   });
 
-  // add the delete button to the delete button cell.
+  // Add the delete button to the delete button cell.
   buttonContainerElement.appendChild(deleteButton);
 
-  // add cells to the row.
+  // Add cells to the row.
   row.appendChild(charityNameElement);
   row.appendChild(donationAmountElement);
   row.appendChild(dateDonatedElement);
   row.appendChild(donationMessageElement);
   row.appendChild(buttonContainerElement);
 
-  // add row to the table.
-  table.appendChild(row);
+  // Return the row.
+  return row;
 }
 
 /**
@@ -161,4 +167,30 @@ function loadDonation(donationKey){
 
   // Return the object.
   return donation;
+}
+
+/**
+ * Refreshes the donation table with all of the saved donations.
+ */
+function loadAllDonations(){
+  // Get the table body element.
+  const table = document.querySelector("#donations-table tbody");
+
+  // Clear the table.
+  table.innerHTML = "";
+
+  // Get all keys of localStorage starting with "donation".
+  const keys = Object.keys(localStorage).filter(key=>key.startsWith("donation"));
+
+  // Loop through the donation keys.
+  keys.forEach(key => {
+    // Load the donation.
+    const donation = loadDonation(key);
+
+    // Create a row element with the donation information.
+    const donationRow = createDonationRow(key, donation);
+
+    // Add the row to the table.
+    table.appendChild(donationRow);
+  });
 }
