@@ -146,3 +146,19 @@ function saveDonation(donation){
   // Return the used key.
   return donationKey;
 }
+
+/**
+ * Gets the donation stored in localStorage as an object.
+ * @param {string} donationKey The key to the donation in localStorage.
+ * @returns {Object} The donation held in storage.
+ */
+function loadDonation(donationKey){
+  // Get the json string from localStorage.
+  let donationJSON = localStorage.getItem(donationKey);
+
+  // Parse the json string into an object.
+  const donation = JSON.parse(donationJSON);
+
+  // Return the object.
+  return donation;
+}
