@@ -117,3 +117,32 @@ function displayDonation({charityName, donationAmount, donationDate, donorMessag
   // add row to the table.
   table.appendChild(row);
 }
+
+/**
+ * Saves an object in localStorage and returns the key used.
+ * @param {Object} donation The object containing the donation information.
+ * @returns {string} The key to the value stored in localStorage.
+ */
+function saveDonation(donation){
+  // Turn the donation object into a JSON string.
+  let donationJSON = JSON.stringify(donation);
+
+  // This number increases until no donation is found with this number.
+  let donationId = 0;
+  // This stores the key in local storage to check for.
+  let donationKey = "";
+
+  // Loops until a vacant spot in local storage is found.
+  do {
+    donationId ++;
+    donationKey = "donation" + donationId;
+  } 
+  // While getItem does not return null.
+  while(localStorage.getItem(donationKey));
+
+  // Add the donation to local storage.
+  localStorage.setItem(donationKey, donationJSON);
+
+  // Return the used key.
+  return donationKey;
+}
